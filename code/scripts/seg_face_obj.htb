@@ -7,14 +7,16 @@ EEG = eeg_checkset( EEG );
 % subject
 EEG.subject = EEG.filename(6:8);
 %group
-if strcmp(EEG.filename(6),'6');
-    EEG.group = 'at-risk';
-else
-    EEG.group = 'control';
-end;
+
 %session
 EEG.session = str2num(EEG.filename(15:16));
 
+             for i=1:length(EEG.event);
+                if strcmp(EEG.event(i).type, 'badt')
+                EEG.event(i).type = 'boundary';
+                end
+             end
+            
 % Removed flagged channels and time segments
 sprintf('%s','Purging flagged channels...\n');
 EEG = pop_marks_select_data(EEG,'channel marks',[],'labels',{'manual','rank'},'remove','on');
@@ -65,28 +67,28 @@ EEG = pop_eegfiltnew(EEG,[],30,[],0,[],0);
 
 tmpEEG=EEG;
 
-% static face
-outfname='derivatives/seg_sta_nois/[/,1,batch_dfn,_,-2]_desc-SEGsta_eeg.set'
+%  face
+outfname='derivatives/seg_face_obj/[/,1,batch_dfn,_,-2]_desc-SEGface_eeg.set'
 [outpath outname outext] = fileparts(outfname);
 if ~exist(outpath,'dir');
     mkdir(outpath);
 end
-EEG = pop_epoch( tmpEEG, { 'sta1','sta2','sta3' }, ...
-                 [-.2 .8], 'newname', 'direct', 'epochinfo', 'yes');
+EEG = pop_epoch( tmpEEG, { 'st+1' }, ...
+                 [-.2 .8], 'newname', 'Face', 'epochinfo', 'yes');
 EEG = pop_rmbase( EEG, [-200    0]);
-EEG.condition = 'static_face';
+EEG.condition = 'face';
 EEG = pop_saveset( EEG, 'filename',outfname);
 
-% noise face
-outfname='derivatives/seg_sta_nois/[/,1,batch_dfn,_,-2]_desc-SEGnois_eeg.set'
+% object
+outfname='derivatives/seg_face_obj/[/,1,batch_dfn,_,-2]_desc-SEGobj_eeg.set'
 [outpath outname outext] = fileparts(outfname);
 if ~exist(outpath,'dir');
     mkdir(outpath);
 end
-EEG = pop_epoch( tmpEEG, { 'Nois' }, ...
-                 [-.2 .8], 'newname', 'noise_face', 'epochinfo', 'yes');
+EEG = pop_epoch( tmpEEG, { 'st+2' }, ...
+                 [-.2 .8], 'newname', 'object', 'epochinfo', 'yes');
 EEG = pop_rmbase( EEG, [-200    0]);
-EEG.condition = 'noise';
+EEG.condition = 'object';
 EEG = pop_saveset( EEG, 'filename',outfname);
 
 
