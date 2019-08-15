@@ -4,7 +4,7 @@
 %with paths to each of the *.set files to be loaded (one file per line).
 %From a bash terminal these file name text files can be created as follows:
 %for example...
-%'find . -type f -name "*-SEG*.set" > derivatives/seg_face_noise/code/misc/fnames.txt
+%'find . -type f -name "*-SEG*.set" > derivatives/seg_face_obj/code/misc/fnames.txt
 
 function [EEG,ALLEEG,CURRENTSET]=loadfnames(EEG,fnamefile)
 
