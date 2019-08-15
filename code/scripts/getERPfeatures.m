@@ -3,7 +3,7 @@
 % With paths to each of the *.set files to be loaded (one file per line).
 % From a bash terminal these file name text files can be created as follows:
 % For example...
-%'find . -type f -name "*-SEG*.set" > derivatives/seg_sta_noise/code/misc/fnames.txt
+%'find . -type f -name "*-SEG*.set" > derivatives/seg_face_obj/code/misc/fnames.txt
 % The outfname input is the name of the file containing the output features
 
 function getERPfeatures(fnamefile,outfname)
